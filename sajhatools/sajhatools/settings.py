@@ -35,10 +35,14 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount', # Used for google/facebook login
+    'crispy_forms',
+    'crispy_tailwind',
     
     # Local Apps
     'core',
     'users',
+    'tools',
+    'borrow',
 ]
 
 SITE_ID = 1 # Required for allauth
@@ -50,6 +54,23 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+# --- django-allauth settings ---
+# Redirect to homepage after login
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# User is identified by their email address
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False # We will still have a username, but login is via email
+ACCOUNT_UNIQUE_EMAIL = True
+
+# We can turn this to 'mandatory' in production
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+# For development, let's have emails print to the console
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -135,26 +156,14 @@ STATIC_URL = "static/"
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 AUTH_USER_MODEL = 'users.CustomUser'
 
-# --- django-allauth settings ---
-# Redirect to homepage after login
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-
-# User is identified by their email address
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False # We will still have a username, but login is via email
-ACCOUNT_UNIQUE_EMAIL = True
-
-# We can turn this to 'mandatory' in production
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
-
-# For development, let's have emails print to the console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
